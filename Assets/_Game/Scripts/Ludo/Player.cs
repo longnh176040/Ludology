@@ -34,9 +34,10 @@ public class Player : MonoBehaviour
 
     public void ActivePieceSelection(bool active = true, bool interactable = true)
     {
+        Debug.Log("Vao day " + active + " " + interactable);
         foreach (var piece in pieceList)
         {
-            piece.ActiveSelection(active);
+            piece.ActiveSelection(active, interactable);
         }
     }
 
