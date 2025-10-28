@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.PackageManager;
 using UnityEngine;
+using Zenject;
 
 public enum TeamColor
 {
@@ -13,7 +14,7 @@ public enum TeamColor
     YELLOW
 }
 
-public class GameController : Singleton<GameController>
+public class GameController : MonoBehaviour
 { 
 
     #region Inspector Variables
@@ -24,6 +25,8 @@ public class GameController : Singleton<GameController>
     #endregion
 
     #region Member Variables
+
+    [Inject] private AudioManager audioManager;
 
     private TeamColor currentTurn;
 
@@ -56,6 +59,27 @@ public class GameController : Singleton<GameController>
 
     #endregion
 
+    #region Public Methods
+
+    public Color GetColor(TeamColor teamColor)
+    {
+        switch (teamColor) 
+        { 
+            case TeamColor.RED:
+                return Color.red;
+            case TeamColor.GREEN:
+                return Color.green;
+            case TeamColor.BLUE:
+                return Color.blue;
+            case TeamColor.YELLOW:
+                return Color.yellow;
+            default: 
+                return Color.white;
+        }
+    }
+
+    #endregion
+
     #region Private Methods
 
     private void Init()
@@ -71,6 +95,8 @@ public class GameController : Singleton<GameController>
 
     private void SwitchTurn()
     {
+        audioManager.PlaySound("Woosh");
+
         if (!IsDoubleTurn)
         {
             switch (currentTurn)

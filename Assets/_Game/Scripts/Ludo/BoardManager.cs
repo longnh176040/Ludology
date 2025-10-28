@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class BoardManager : Singleton<BoardManager>
+public class BoardManager : MonoBehaviour
 {
     [SerializeField] private MovePoint[] movePoints;
     [SerializeField] private InHouse[] inHousesList;
@@ -57,7 +57,6 @@ public class BoardManager : Singleton<BoardManager>
             resInHousePoints[i] = inHousePoints[start + i + 1];
         }
         return resInHousePoints;
-
     }
 
     public MovePoint FindNextMovePoint(MovePoint curMovePoint)

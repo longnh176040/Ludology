@@ -10,7 +10,7 @@ public struct AudioData
     public AudioClip audioClip;
     [Range(0, 1)] public float volume;
 }
-public class AudioManager : Singleton<AudioManager>
+public class AudioManager : MonoBehaviour
 {
     private AudioSource musicSource;
     private AudioSource soundSource;
@@ -37,7 +37,6 @@ public class AudioManager : Singleton<AudioManager>
 
     public void Awake()
     {
-        //base.Awake();
         musics = new Dictionary<string, int>();
         sounds = new Dictionary<string, int>();
         AudioMapping(musicTracks, musics);

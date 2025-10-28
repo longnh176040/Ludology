@@ -1,8 +1,11 @@
 using System.Linq;
 using UnityEngine;
+using Zenject;
 
 public class Player : MonoBehaviour
 {
+    #region Inspector Variables
+
     [SerializeField] private TeamColor teamColor;
     [SerializeField] private GameObject turnBorder_Obj;
     [SerializeField] private RectTransform[] pieceTransList;
@@ -10,10 +13,24 @@ public class Player : MonoBehaviour
     [SerializeField] private Dice dice;
     [SerializeField] private BoardPoint startPoint;
 
+    #endregion
+
+    #region Properties
+
     public TeamColor TeamColor => teamColor;
     public BoardPoint StartPoint => startPoint;
     public int PieceInHouse { get; private set; }
+
+    #endregion
+
+    #region Member Variables
+
+    [Inject] private BoardManager boardManager;
     private bool allPieceInCorner = true;
+
+    #endregion
+
+    #region Public Methods
 
     public void Init()
     {
@@ -34,7 +51,6 @@ public class Player : MonoBehaviour
 
     public void ActivePieceSelection(bool active = true, bool interactable = true)
     {
-        Debug.Log("Vao day " + active + " " + interactable);
         foreach (var piece in pieceList)
         {
             piece.ActiveSelection(active, interactable);
@@ -77,7 +93,7 @@ public class Player : MonoBehaviour
                 }
                 else
                 {
-                    BoardPoint[] path = BoardManager.Instance.CreatePath(teamColor, piece.CurrentPoint, diceNumber);
+                    BoardPoint[] path = boardManager.CreatePath(teamColor, piece.CurrentPoint, diceNumber);
                     if (path != null)
                     {
                         piece.SetMoveAction(path);
@@ -122,4 +138,6 @@ public class Player : MonoBehaviour
         EventManager.SendSimpleEvent(Events.WIN_GAME);
         Debug.Log(gameObject.name + " WIN GAME!!!");
     }
+
+    #endregion
 }

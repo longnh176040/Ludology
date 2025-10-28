@@ -1,20 +1,39 @@
 using UnityEngine;
+using Zenject;
+using Zenject.Asteroids;
 
 public class Dice : MonoBehaviour
 {
+    #region Inspector Variables
+
     [SerializeField] private UIButton diceBtn;
     [SerializeField] private Animation zoomAnimation;
     [SerializeField] private Animation rollAnimation;
 
     [SerializeField] private GameObject[] diceNumbers;
 
+    #endregion
+
+    #region Property 
+
     public int DiceResult { get; private set; }
 
-    public void SetActiveDiceButton(bool active = true, bool animate = true)
+    #endregion
+
+    #region Member Variables
+
+    [Inject] private AudioManager audioManager;
+    [Inject] private GameController gameController;
+    
+    #endregion
+
+    #region Public Methods 
+
+    public void SetActiveDiceButton(bool active = true)
     {
         diceBtn.enabled = active;
 
-        if (animate) zoomAnimation.Play();
+        if (active) zoomAnimation.Play();
         else
         {
             zoomAnimation.Stop();
@@ -24,9 +43,9 @@ public class Dice : MonoBehaviour
 
     public void OnDiceClick()
     {
-        AudioManager.Instance.PlaySound("Dice");
+        audioManager.PlaySound("Dice");
 
-        diceBtn.enabled = false;
+        diceBtn.enabled = false; 
         zoomAnimation.Stop();
         diceBtn.transform.localScale = Vector3.one;
         rollAnimation.Play();
@@ -45,10 +64,12 @@ public class Dice : MonoBehaviour
 
         if (DiceResult == 6)
         {
-            AudioManager.Instance.PlaySound("Dice 6");
+            audioManager.PlaySound("Dice 6");
         }
 
-        GameController.Instance.IsDoubleTurn = (DiceResult == 6);
+        gameController.IsDoubleTurn = (DiceResult == 6);
         EventManager.SendSimpleEvent(Events.FINISH_DICE);
     }
+
+    #endregion
 }

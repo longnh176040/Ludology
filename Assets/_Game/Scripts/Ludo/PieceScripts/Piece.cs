@@ -3,15 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Zenject;
 
 public class Piece : MonoBehaviour
 {
+    #region Inspector Variables
+
     [SerializeField] private GameObject selectVFX_Obj;
     [SerializeField] private UIButton selectBtn;
     [SerializeField] private RectTransform rectTrans;
 
     [Header("TEAM")]
     [SerializeField] private Player player;
+
+    #endregion
+
+    #region Properties
 
     public int Id { get; private set; }
     public RectTransform RectTrans => rectTrans;
@@ -22,6 +29,14 @@ public class Piece : MonoBehaviour
 
     public BoardPoint CurrentPoint => currentPoint;
 
+    #endregion
+
+    #region Member Variables
+
+    [Inject] private AudioManager audioManager;
+    [Inject] private GameController gameController;
+    [Inject] private BoardManager boardManager;
+
     private BoardPoint currentPoint;
     private BoardPoint[] path;
 
@@ -31,6 +46,9 @@ public class Piece : MonoBehaviour
     private float inBoardScaleOffset = 1f;
     private float inSharedBoardScaleOffset = 0.75f;
 
+    #endregion
+
+    #region Public Methods
 
     public void Init(int id)
     {
@@ -69,6 +87,9 @@ public class Piece : MonoBehaviour
         }*/
     }
 
+    #endregion
+
+    #region Private Methods
 
     private void Move(BoardPoint[] path)
     {
@@ -104,7 +125,7 @@ public class Piece : MonoBehaviour
         
             // Snap to final position
             rectTrans.SetParent(targetParent);
-            AudioManager.Instance.PlaySound("Step");
+            audioManager.PlaySound("Step");
 
             float elapsedTime = 0f;
 
@@ -198,12 +219,12 @@ public class Piece : MonoBehaviour
                 // Kick enemy
                 MovePoint curEnemyPoint = (MovePoint)piece.currentPoint;
                 MovePoint targetEnemyPoint = (MovePoint)piece.player.StartPoint;
-                MovePoint[] returnPath = BoardManager.Instance.FindPathBetweenMovePoints(curEnemyPoint.ID, targetEnemyPoint.ID);
+                MovePoint[] returnPath = boardManager.FindPathBetweenMovePoints(curEnemyPoint.ID, targetEnemyPoint.ID);
             
                 if (returnPath != null)
                 {
                     piece.GetKicked(returnPath);
-                    GameController.Instance.IsDoubleTurn = true;
+                    gameController.IsDoubleTurn = true;
                 }
                 else
                 {
@@ -247,7 +268,7 @@ public class Piece : MonoBehaviour
             rectTrans.anchoredPosition = Vector3.zero;
         }
 
-        AudioManager.Instance.PlaySound("Kick");
+        audioManager.PlaySound("Kick");
 
         IsInCorner = true;
         rectTrans.localScale = Vector3.one * inCornerScaleOffset;
@@ -257,4 +278,6 @@ public class Piece : MonoBehaviour
         path = null;
         player.CheckAreAllPiecesInCorner();
     }
+
+    #endregion
 }

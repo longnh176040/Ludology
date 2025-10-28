@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class ScreenManager : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class ScreenManager : MonoBehaviour
 
 	// The screen that is currently being shown
 	private CustomScreen currentScreen;
+
+	[Inject] private AudioManager audioManager;
 
 	#endregion
 
@@ -72,6 +75,7 @@ public class ScreenManager : MonoBehaviour
 
 		// Show the home screen when the app starts up
 		Show(MainScreenId, false, true);
+		audioManager.PlayMusic("bg_music");
 	}
 
     #endregion
