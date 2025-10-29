@@ -24,6 +24,7 @@ public class Dice : MonoBehaviour
 
     [Inject] private AudioManager audioManager;
     [Inject] private GameController gameController;
+    [Inject] private SignalBus signalBus;
     
     #endregion
 
@@ -65,10 +66,10 @@ public class Dice : MonoBehaviour
         if (DiceResult == 6)
         {
             audioManager.PlaySound("Dice 6");
+            signalBus.Fire(new ExtendTurnSignal { });
         }
 
-        gameController.IsDoubleTurn = (DiceResult == 6);
-        EventManager.SendSimpleEvent(Events.FINISH_DICE);
+        signalBus.Fire(new FinishDiceSignal { });
     }
 
     #endregion

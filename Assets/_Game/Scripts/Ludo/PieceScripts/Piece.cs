@@ -36,6 +36,7 @@ public class Piece : MonoBehaviour
     [Inject] private AudioManager audioManager;
     [Inject] private GameController gameController;
     [Inject] private BoardManager boardManager;
+    [Inject] private SignalBus signalBus;
 
     private BoardPoint currentPoint;
     private BoardPoint[] path;
@@ -166,7 +167,8 @@ public class Piece : MonoBehaviour
         }
     
         path = null;
-        EventManager.SendSimpleEvent(Events.END_TURN);
+        //EventManager.SendSimpleEvent(Events.END_TURN);
+        signalBus.Fire(new SwitchTurnSignal { });
     }
 
     private void HandleInHousePoint(BoardPoint point)
@@ -224,7 +226,7 @@ public class Piece : MonoBehaviour
                 if (returnPath != null)
                 {
                     piece.GetKicked(returnPath);
-                    gameController.IsDoubleTurn = true;
+                    signalBus.Fire(new ExtendTurnSignal { });
                 }
                 else
                 {

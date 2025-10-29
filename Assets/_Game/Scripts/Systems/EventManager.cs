@@ -2,6 +2,19 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Events
+{
+    //Event for game stage
+    START_GAME,
+
+    FINISH_DICE,
+    END_TURN,
+
+    WIN_GAME,
+
+
+}
+
 public static class EventManager
 {
     private static class Holder<T> where T : class // Exclude structs because of iOS JIT issues
@@ -170,15 +183,4 @@ public static class EventManager
         }
     }
 }
-public enum Events
-{
-    //Event for game stage
-    START_GAME,
 
-    FINISH_DICE,
-    END_TURN,
-
-    WIN_GAME,
-
-
-}

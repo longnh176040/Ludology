@@ -26,6 +26,8 @@ public class Player : MonoBehaviour
     #region Member Variables
 
     [Inject] private BoardManager boardManager;
+    [Inject] private SignalBus signalBus;
+
     private bool allPieceInCorner = true;
 
     #endregion
@@ -65,7 +67,7 @@ public class Player : MonoBehaviour
         {
             if (diceNumber != 6)
             {
-                EventManager.SendSimpleEvent(Events.END_TURN);
+                signalBus.Fire(new SwitchTurnSignal { });
             }
             else
             {
@@ -102,7 +104,8 @@ public class Player : MonoBehaviour
                     }
                 }
             }
-            if (isAllPieceCantMove) EventManager.SendSimpleEvent(Events.END_TURN);
+            if (isAllPieceCantMove)
+                signalBus.Fire(new SwitchTurnSignal { });
         }
     }
 
@@ -135,7 +138,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        EventManager.SendSimpleEvent(Events.WIN_GAME);
+        signalBus.Fire(new GameOver { });
         Debug.Log(gameObject.name + " WIN GAME!!!");
     }
 

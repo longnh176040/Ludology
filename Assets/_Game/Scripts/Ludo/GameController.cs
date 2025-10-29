@@ -1,8 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEditor.PackageManager;
 using UnityEngine;
 using Zenject;
 
@@ -29,28 +24,11 @@ public class GameController : MonoBehaviour
     [Inject] private AudioManager audioManager;
 
     private TeamColor currentTurn;
-
-    #endregion
-
-    #region Properties
-
-    public bool IsDoubleTurn { get; set; }
+    private bool isDoubleTurn;
 
     #endregion
 
     #region Unity Methods
-
-    private void OnEnable()
-    {
-        EventManager.Connect(Events.FINISH_DICE, SetMoveTurn);
-        EventManager.Connect(Events.END_TURN, SwitchTurn);
-    }
-
-    private void OnDisable()
-    {
-        EventManager.Disconnect(Events.FINISH_DICE, SetMoveTurn);
-        EventManager.Disconnect(Events.END_TURN, SwitchTurn);
-    }
 
     private void Start()
     {
@@ -78,6 +56,22 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public void OnExtendTurn()
+    {
+        isDoubleTurn = true;
+    }
+
+    public void OnFinishDice()
+    {
+        SetMoveTurn();
+    }
+
+    public void OnSwitchTurn()
+    {
+        SwitchTurn();
+    }
+
+
     #endregion
 
     #region Private Methods
@@ -95,10 +89,10 @@ public class GameController : MonoBehaviour
 
     private void SwitchTurn()
     {
-        audioManager.PlaySound("Woosh");
-
-        if (!IsDoubleTurn)
+        if (!isDoubleTurn)
         {
+            audioManager.PlaySound("Woosh");
+
             switch (currentTurn)
             {
                 case TeamColor.RED:
@@ -117,7 +111,7 @@ public class GameController : MonoBehaviour
         }
 
         SetDiceTurn();
-        IsDoubleTurn = false;
+        isDoubleTurn = false;
     }
 
     private void SetDiceTurn()
