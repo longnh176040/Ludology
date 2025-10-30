@@ -676,6 +676,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57cceba0bfce3f2428e28370e98a24dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rectTransform: {fileID: 1866445575345556991}
   characterImage: {fileID: 7844711266121029288}
   turnTxt: {fileID: 2645912009305049601}
   frameImage: {fileID: 6804130978259331804}

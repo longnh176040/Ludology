@@ -44,16 +44,15 @@ public class GameController : MonoBehaviour
         switch (teamColor) 
         { 
             case TeamColor.RED:
-                return Color.red;
+                return new Color(1f, 99f/255f, 99f / 255f, 1f);
             case TeamColor.GREEN:
-                return Color.green;
+                return new Color(136f / 255f, 1f, 89f / 255f, 1f);
             case TeamColor.BLUE:
-                return Color.blue;
+                return new Color(71f / 255f, 188f / 255f, 1f, 1f);
             case TeamColor.YELLOW:
-                return Color.yellow;
-            default: 
-                return Color.white;
+                return new Color(1f, 239f / 255f, 68f / 255f, 1f);                
         }
+        return Color.white;
     }
 
     public void OnExtendTurn()
@@ -71,6 +70,11 @@ public class GameController : MonoBehaviour
         SwitchTurn();
     }
 
+    public void OnMainGameStart()
+    {
+        SetDiceTurn();
+    }
+
 
     #endregion
 
@@ -84,7 +88,6 @@ public class GameController : MonoBehaviour
         }
 
         currentTurn = TeamColor.RED;
-        SetDiceTurn();
     }
 
     private void SwitchTurn()

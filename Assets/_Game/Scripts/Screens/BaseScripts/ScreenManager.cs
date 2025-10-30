@@ -82,7 +82,7 @@ public class ScreenManager : MonoBehaviour
 
     #region Public Methods
 
-    #region UI
+    #region Screen Function
     public static RectTransform CreateScreenContainer(Transform containerParent, List<CustomScreen> screensInContainer = null, int siblingIndex = -1)
 	{
 		GameObject screenContainerObj = new GameObject("screen_container");
@@ -151,15 +151,36 @@ public class ScreenManager : MonoBehaviour
 		loadingScreen.Show(3f);
     }
 
-    #endregion
-
-    
-
 	#endregion
 
-	#region Private Methods
+	#region Anchoring Function
 
-	private void Show(string screenId, bool back, bool immediate)
+	public Vector2 GetAnchorPosition(AnchorConstraint constraint)
+	{
+		float widthCenter = GameManager.ScreenWidth / 2;
+		float heightCenter = GameManager.ScreenHeight / 2;
+
+		switch (constraint) 
+		{
+			case AnchorConstraint.TOP_LEFT_CORNER:
+				return new Vector2 (-widthCenter, heightCenter);
+			case AnchorConstraint.TOP_RIGHT_CORNER:
+				return new Vector2 (widthCenter, heightCenter);
+			case AnchorConstraint.BOTTOM_LEFT_CORNER: 
+				return new Vector2 (-widthCenter, -heightCenter);
+			case AnchorConstraint.BOTTOM_RIGHT_CORNER: 
+				return new Vector2 (widthCenter, -heightCenter);
+		}
+		return Vector2.zero;
+	}
+
+    #endregion
+
+    #endregion
+
+    #region Private Methods
+
+    private void Show(string screenId, bool back, bool immediate)
 	{
 		// Get the screen we want to show
 		CustomScreen screen = GetScreenById(screenId);
@@ -197,4 +218,11 @@ public class ScreenManager : MonoBehaviour
 
 	#endregion
 
+}
+public enum AnchorConstraint
+{
+    TOP_LEFT_CORNER,
+    TOP_RIGHT_CORNER,
+    BOTTOM_LEFT_CORNER,
+    BOTTOM_RIGHT_CORNER
 }

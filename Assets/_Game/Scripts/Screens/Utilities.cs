@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -151,7 +153,7 @@ public static class Utilities
 			}
 		}
 		
-		T cloneObject = Object.Instantiate(prefab);
+		T cloneObject = UnityEngine.Object.Instantiate(prefab);
 		cloneObject.transform.SetParent(parent);
 		cloneObject.name = prefab.name;
 		listObject.Add(cloneObject);
@@ -208,11 +210,32 @@ public static class Utilities
 			"Riley Gould", "Violeta Peralta", "Dangelo Reilly", "Tori Lynn", "Zechariah Foley",
 			"Zaylee Moran", "Tate Vazquez", "Journee Rogers", "Colton Walter", "Penny Yu"
 		};
-		int rand = Random.Range(0, nameList.Length);
+		int rand = UnityEngine.Random.Range(0, nameList.Length);
 		return nameList[rand];
     }
 	#endregion
 
+}
+
+public static class TransformExtensions
+{
+    // Static method to smoothly lerp the local scale of any Transform
+    public static IEnumerator IELerpScale(Transform transform, Vector3 targetScale, float duration)
+    {
+        if (transform == null) yield break;
+
+        Vector3 startScale = transform.localScale;   
+        float timeElapsed = 0f;
+
+        while (timeElapsed < duration)
+        {
+            timeElapsed += Time.deltaTime;  
+            transform.localScale = Vector3.Lerp(startScale, targetScale, timeElapsed / duration); 
+            yield return null; 
+        }
+
+        transform.localScale = targetScale;
+    }
 }
 
 public static class RectTransformExtensions
@@ -236,4 +259,43 @@ public static class RectTransformExtensions
 	{
 		rt.offsetMin = new Vector2(rt.offsetMin.x, bottom);
 	}
+
+    public static IEnumerator IELerpRectTransform(RectTransform rt, Vector3 targetPos, float duration, Action callback = null)
+    {
+        if (rt == null) yield break;
+
+        float timeElapsed = 0f;
+
+        while (timeElapsed < duration)
+        {
+            rt.anchoredPosition = Vector3.Lerp(rt.anchoredPosition, targetPos, timeElapsed / duration);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        rt.anchoredPosition = targetPos;
+		callback?.Invoke();
+    }
+
 }
+
+public static class CanvasGroupExtensions
+{
+    public static IEnumerator IELerpAlpha(CanvasGroup canvasGroup, float targetAlpha, float duration)
+    {
+        if (canvasGroup == null) yield break;
+
+        float startAlpha = canvasGroup.alpha; 
+        float timeElapsed = 0f;  
+
+        while (timeElapsed < duration)
+        {
+			timeElapsed += Time.deltaTime;
+            canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, timeElapsed / duration);
+            yield return null;  
+        }
+
+        canvasGroup.alpha = targetAlpha;
+    }
+}
+
