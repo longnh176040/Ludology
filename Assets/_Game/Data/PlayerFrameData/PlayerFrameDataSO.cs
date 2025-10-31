@@ -1,13 +1,16 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "PlayerFrameData", menuName = "Data/PlayerFramData")]
+[CreateAssetMenu(fileName = "RepresentationData", menuName = "Data/RepresentationData")]
 public class PlayerFrameDataSO : ScriptableObject
 {
-    public Sprite[] frameSprites;
-    public Sprite[] backgroundSprites;
+    public FrameItemSO[] frameItems;
+    public BackgroundItemSO[] backgroundItems;
 
-    public Sprite[] redAvatars;
-    public Sprite[] blueAvatars; 
-    public Sprite[] greenAvatars; 
-    public Sprite[] yellowAvatars;
-}
+    public AvatarItemSO[] redAvatars;
+    public AvatarItemSO[] blueAvatars; 
+    public AvatarItemSO[] greenAvatars; 
+    public AvatarItemSO[] yellowAvatars;
+} 
+
+
+

@@ -14,7 +14,7 @@ public class MatchingUnit : MonoBehaviour
 
     [SerializeField] private TeamColor color;
     [SerializeField] private AnchorConstraint anchorConstraint;
-    [SerializeField] private PlayerFrame playerFrame;
+    [SerializeField] private MatchingPlayerFrame playerFrame;
 
     #endregion
 
@@ -38,12 +38,12 @@ public class MatchingUnit : MonoBehaviour
     #endregion
 
     #region Public Methods
-    public void PlayInAnimation(float duration = 1f)
+    public void PlayInAnimation(float duration = 1f, float findOpponentDuration = 2f)
     {
         rectTransform.anchoredPosition = anchorPosition * 2;
         PlayAnimation(anchorPosition, duration, ()=>
         {
-            playerFrame.RandomFakePlayer();
+            playerFrame.FindOpponent(findOpponentDuration);
         });
     }
 

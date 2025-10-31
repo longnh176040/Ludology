@@ -11,7 +11,7 @@ public class GameInstaller : MonoInstaller
         Container.Bind<AudioManager>().FromComponentInHierarchy().AsSingle();
         Container.Bind<BoardManager>().FromComponentInHierarchy().AsSingle();
         Container.Bind<MatchingScreen>().FromComponentInHierarchy().AsSingle();
-        Container.Bind<FakePlayerManager>().FromComponentInHierarchy().AsSingle();
+        Container.Bind<FrameDataManager>().FromComponentInHierarchy().AsSingle();
 
         //====== Install Signal ======
         SignalBusInstaller.Install(Container);

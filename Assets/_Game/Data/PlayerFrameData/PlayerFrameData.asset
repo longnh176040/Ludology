@@ -12,33 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8554098ff17de4049bb8d47a107916f2, type: 3}
   m_Name: PlayerFrameData
   m_EditorClassIdentifier: 
-  frameSprites:
-  - {fileID: 21300000, guid: c036f3de1f1584b6eb35aa03cce9964c, type: 3}
-  - {fileID: 21300000, guid: f15592dc24bff49d78a672633c432c40, type: 3}
-  - {fileID: 21300000, guid: 72a8734fdf28344f5bec4e848deca398, type: 3}
-  - {fileID: 21300000, guid: 6854a5c0a3c1c43a58b7bd0ce06c0935, type: 3}
-  backgroundSprites:
-  - {fileID: 21300000, guid: 427ac1f9e8f5d4fb6b2366559519f8fd, type: 3}
-  - {fileID: 21300000, guid: 91343437293ce45ac84f9583191fd0bd, type: 3}
-  - {fileID: 21300000, guid: 535673d3292e04b449b63e2d699f99ef, type: 3}
-  - {fileID: 21300000, guid: 8e3feb46c1a9745ff8d049306e68d84b, type: 3}
+  frameItems: []
+  backgroundItems: []
   redAvatars:
-  - {fileID: 21300000, guid: 279752a51107d429c80f1530d653b8c9, type: 3}
-  - {fileID: 21300000, guid: cedea9cb0486e414d8ec8794ffb9846e, type: 3}
-  - {fileID: 21300000, guid: f3b7e31eb60b84b17870d0b5d926cfad, type: 3}
-  - {fileID: 21300000, guid: 2d38dacc3ea724ca2a93603beffef5a1, type: 3}
+  - {fileID: 11400000, guid: d16047a270a11a44381015a8977dc221, type: 2}
+  - {fileID: 11400000, guid: 05cabca4e45ac434580f6b9fffd5afec, type: 2}
+  - {fileID: 11400000, guid: 673196ef54c24694baeb30d3a82a1765, type: 2}
+  - {fileID: 11400000, guid: ddc05174455b9844895b9b3c4d919ca8, type: 2}
   blueAvatars:
-  - {fileID: 21300000, guid: 1ebe9d3ac5ce74f3589c006da297bdc7, type: 3}
-  - {fileID: 21300000, guid: 484dcdaf0825148b886e56472fb3bb78, type: 3}
-  - {fileID: 21300000, guid: b9fed4f929e0d450b9495ff47e48c7dc, type: 3}
+  - {fileID: 11400000, guid: 5a938f85f89f03b46b561aa1f5217e72, type: 2}
+  - {fileID: 11400000, guid: 4c4b8af23c9cb9b4995d5b474dd17773, type: 2}
+  - {fileID: 11400000, guid: dabc8d5c8d84ed840bf6c0e0b4edcbf0, type: 2}
   greenAvatars:
-  - {fileID: 21300000, guid: fa8d7e24e8b094f028e98ed7813eed4d, type: 3}
-  - {fileID: 21300000, guid: b76446236559e4a7ebfbdc6519fa9d07, type: 3}
-  - {fileID: 21300000, guid: 23e2b16eb7e0748babf6dc861d198ed1, type: 3}
+  - {fileID: 11400000, guid: d4b5f5d19fadd424e9b8809bbcc34e56, type: 2}
+  - {fileID: 11400000, guid: 5b4fd26921e4a394c9b2a27a79b995d6, type: 2}
+  - {fileID: 11400000, guid: a9f7d151caf0ec443a9ac6e351d06207, type: 2}
   yellowAvatars:
-  - {fileID: 21300000, guid: 67064555f276e47cb94e13287904dd01, type: 3}
-  - {fileID: 21300000, guid: eb22d376b7994415aac9d7a87ff27901, type: 3}
-  - {fileID: 21300000, guid: b6975c3de651f42babaed097a5f3312b, type: 3}
-  - {fileID: 21300000, guid: c3c72287193214996af4f29c39ba21ef, type: 3}
-  - {fileID: 21300000, guid: cedea9cb0486e414d8ec8794ffb9846e, type: 3}
-  - {fileID: 21300000, guid: 96ff8090ed400444ca45e8ef17e76f0c, type: 3}
+  - {fileID: 11400000, guid: 0efb9526037fdd94a98bc8d794f582a3, type: 2}
+  - {fileID: 11400000, guid: 3376c0013ae0f0042913e5628b3c0bc8, type: 2}
+  - {fileID: 11400000, guid: 810530b209905eb4ba1ad07ac45c7a9f, type: 2}
+  - {fileID: 11400000, guid: 785e949b75882134fbebd82f0aaa0ccb, type: 2}
+  - {fileID: 11400000, guid: e0d5ef1031d8e3e4eaa02b0fb76f773e, type: 2}
+  - {fileID: 11400000, guid: b5346f2950b0e754b896f7d52a79579a, type: 2}

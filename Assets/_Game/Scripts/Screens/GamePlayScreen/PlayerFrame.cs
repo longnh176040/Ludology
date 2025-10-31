@@ -7,12 +7,12 @@ public class PlayerFrame : MonoBehaviour
 {
     #region Inspector Variables
 
-    [SerializeField] private TeamColor color;
-    [SerializeField] private RectTransform rectTransform;
-    [SerializeField] private Image characterImage;
-    [SerializeField] private Image frameImage;
-    [SerializeField] private Image bgImg;
-    [SerializeField] private TextMeshProUGUI turnTxt;
+    [SerializeField] protected TeamColor color;
+    [SerializeField] protected RectTransform rectTransform;
+    [SerializeField] protected Image characterImage;
+    [SerializeField] protected Image frameImage;
+    [SerializeField] protected Image bgImg;
+    [SerializeField] protected TextMeshProUGUI turnTxt;
 
     #endregion
 
@@ -24,16 +24,11 @@ public class PlayerFrame : MonoBehaviour
 
     #region Member Variables
 
-    [Inject] private FakePlayerManager fakePlayerManager;
+    [Inject] protected FrameDataManager frameDataManager;
 
     #endregion
 
     #region Public Methods
-
-    public void RandomFakePlayer()
-    {
-        fakePlayerManager.RandomAvatarRoutine(this);
-    }
 
     public void SetPosition(Vector3 position)
     {
@@ -61,6 +56,16 @@ public class PlayerFrame : MonoBehaviour
 
         turnTxt.text = isPlayer ? "YOU" : "PLAYER";
         //frameImage.color = isPlayer ? Color.red : Color.white;
+    }
+
+    #endregion
+
+    #region Private Methods
+
+    protected void ShowInfo(bool show = true)
+    {
+        turnTxt.gameObject.SetActive(show);
+        characterImage.gameObject.SetActive(show);
     }
 
     #endregion

@@ -5571,8 +5571,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerFrameData: {fileID: 11400000, guid: f5b370ce0f9138641965603b851c0a2e, type: 2}
-  minDuration: 0.25
-  maxDuration: 2
 --- !u!1 &380658802
 GameObject:
   m_ObjectHideFlags: 0
@@ -16960,6 +16958,8 @@ MonoBehaviour:
   - audioClip: {fileID: 8300000, guid: 56d23f4f1d744654cb8c2b9f23c158f6, type: 3}
     volume: 1
   - audioClip: {fileID: 8300000, guid: 86936699c755caf4b85ecbfbdb94f02d, type: 3}
+    volume: 1
+  - audioClip: {fileID: 8300000, guid: 5b86b2a76a311f24d8c73f6b60ef0c92, type: 3}
     volume: 1
 --- !u!4 &1480556694
 Transform:
