@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Audio;
 using UnityEngine;
+using Zenject;
 
 [Serializable]
 public struct AudioData
@@ -12,10 +13,29 @@ public struct AudioData
 }
 public class AudioManager : MonoBehaviour
 {
+    #region Inspector Variables
+
+    [SerializeField] private float crossFadeTransition;
+    [SerializeField] private AudioMixerGroup musicMixer;
+    [SerializeField] private AudioMixerGroup soundMixer;
+    [SerializeField] private List<AudioData> musicTracks;
+    [SerializeField] private List<AudioData> soundTracks;
+
+    #endregion
+
+    #region Member Variables
+
     private AudioSource musicSource;
     private AudioSource soundSource;
     private Dictionary<string, int> musics;
     private Dictionary<string, int> sounds;
+
+    [Inject] private DataManager dataManager;
+
+    #endregion
+
+    #region Properties
+
     public bool MuteMusic {
         get => musicSource.mute;
         set => musicSource.mute = value;
@@ -29,11 +49,9 @@ public class AudioManager : MonoBehaviour
         get => musicSource.isPlaying;
     }
 
-    [SerializeField] private float crossFadeTransition;
-    [SerializeField] private AudioMixerGroup musicMixer;
-    [SerializeField] private AudioMixerGroup soundMixer;
-    [SerializeField] private List<AudioData> musicTracks;
-    [SerializeField] private List<AudioData> soundTracks;
+    #endregion
+
+    #region Unity Methods
 
     public void Awake()
     {
@@ -50,6 +68,8 @@ public class AudioManager : MonoBehaviour
     {
         Initialize();
     }
+
+    #endregion
 
     private AudioSource CreateAudioSource(AudioMixerGroup audioMixerGroup)
     {
@@ -84,20 +104,20 @@ public class AudioManager : MonoBehaviour
     }
     public void Initialize()
     {
-        SetMusicVolume(DataManager.Instance.settingData.music);
-        SetSFXVolume(DataManager.Instance.settingData.sound);
+        SetMusicVolume(dataManager.settingData.music);
+        SetSFXVolume(dataManager.settingData.sound);
     }
 
     public void SetMusicVolume(float volume)
     {
         musicMixer.audioMixer.SetFloat("MusicVol", volume);
-        DataManager.Instance.settingData.music = volume;
+        dataManager.settingData.music = volume;
     }
 
     public void SetSFXVolume(float volume)
     {
         soundMixer.audioMixer.SetFloat("SFXVol", volume);
-        DataManager.Instance.settingData.sound = volume;
+        dataManager.settingData.sound = volume;
     }
 
     public void PlayMusic(string musicName, bool loop = true)

@@ -214,6 +214,10 @@ PrefabInstance:
       value: -129
       objectReference: {fileID: 0}
     - target: {fileID: 4128750077799030761, guid: 32c03ee0cf6e9464e9dafd7833f333fe, type: 3}
+      propertyPath: m_Name
+      value: Name Txt
+      objectReference: {fileID: 0}
+    - target: {fileID: 4128750077799030761, guid: 32c03ee0cf6e9464e9dafd7833f333fe, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -315,7 +319,7 @@ MonoBehaviour:
   characterImage: {fileID: 2120239542663945794}
   frameImage: {fileID: 3449679142302147126}
   bgImg: {fileID: 2443842383187168295}
-  turnTxt: {fileID: 6127907055976039147}
+  nameTxt: {fileID: 6127907055976039147}
   searchIconObj: {fileID: 7954179758849011776}
 --- !u!114 &3449679142302147126 stripped
 MonoBehaviour:

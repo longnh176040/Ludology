@@ -1,6 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using Zenject.SpaceFighter;
 
 public class FrameDataManager : MonoBehaviour
 {
@@ -10,18 +11,41 @@ public class FrameDataManager : MonoBehaviour
 
     #endregion
 
+    #region Member Variables
+
+    private Dictionary<string, AvatarItemSO> avatarDict;
+    private Dictionary<string, FrameItemSO> frameDict;
+    private Dictionary<string, BackgroundItemSO> backgroundDict;
+
+    #endregion
+
+    #region Unity Methods
+
+    public void Awake()
+    {
+        BuildItemDictionary();
+    }
+
+    #endregion
+
     #region Public Methods
 
-    public (int, int, int) RandomPlayerFrame(TeamColor color)
+    public PlayerInfo RandomPlayerInfo(TeamColor color)
     {
         AvatarItemSO[] avatars = GetAvatarListByColor(color);
         if (avatars == null) Debug.LogError("Avatar data not found!");
 
-        int avatarID = Random.Range(0, avatars.Length);
-        int frameID = Random.Range(0, playerFrameData.frameItems.Length);
-        int backgroundID = Random.Range(0, playerFrameData.backgroundItems.Length);
+        int avatarID = UnityEngine.Random.Range(0, avatars.Length);
+        int frameID = UnityEngine.Random.Range(0, playerFrameData.frameItems.Length);
+        int backgroundID = UnityEngine.Random.Range(0, playerFrameData.backgroundItems.Length);
 
-        return (avatarID, frameID, backgroundID);
+        var playerInfo = new PlayerInfo("null", 
+            avatars[avatarID].id, 
+            playerFrameData.frameItems[frameID].id, 
+            playerFrameData.backgroundItems[backgroundID].id, 
+            Utilities.RandomName());
+
+        return playerInfo;
     }
 
     public AvatarItemSO GetAvatarItemByIndex(TeamColor color, int idx = 0)
@@ -29,9 +53,19 @@ public class FrameDataManager : MonoBehaviour
         return GetAvatarListByColor(color)[idx];
     }
 
+    public AvatarItemSO GetAvatarItemByID(string id)
+    {
+        return avatarDict[id];
+    }
+
     public BackgroundItemSO GetBackgroundItemByIndex(int idx = 0)
     {
         return playerFrameData.backgroundItems[idx];
+    }
+
+    public BackgroundItemSO GetBackgroundItemByID(string id)
+    {
+        return backgroundDict[id];
     }
 
     public FrameItemSO GetFrameItemByIndex(int idx = 0)
@@ -39,14 +73,50 @@ public class FrameDataManager : MonoBehaviour
         return playerFrameData.frameItems[idx];
     }
 
-    public void RandomAvatarRoutine(PlayerFrame player)
+    public FrameItemSO GetFrameItemByID(string id)
     {
-        StartCoroutine(IERandomPlayerFrame(player));
+        return frameDict[id];
     }
 
     #endregion
 
     #region Private Methods
+
+    private void BuildItemDictionary()
+    {
+        avatarDict = new();
+
+        List<AvatarItemSO> avatarMerged = new List<AvatarItemSO>(playerFrameData.redAvatars);
+        avatarMerged.AddRange(playerFrameData.blueAvatars);
+        avatarMerged.AddRange(playerFrameData.greenAvatars);
+        avatarMerged.AddRange(playerFrameData.yellowAvatars);
+
+        foreach (var avatar in avatarMerged)
+        {
+            if (!avatarDict.ContainsKey(avatar.id))
+                avatarDict.Add(avatar.id, avatar);
+            else
+                Debug.LogWarning($"Duplicate avatar ID found: {avatar.id}");
+        }
+
+        frameDict = new();
+        foreach (var frame in playerFrameData.frameItems)
+        {
+            if (!frameDict.ContainsKey(frame.id))
+                frameDict.Add(frame.id, frame);
+            else
+                Debug.LogWarning($"Duplicate frame ID found: {frame.id}");
+        }
+
+        backgroundDict = new();
+        foreach (var bg in playerFrameData.backgroundItems)
+        {
+            if (!backgroundDict.ContainsKey(bg.id))
+                backgroundDict.Add(bg.id, bg);
+            else
+                Debug.LogWarning($"Duplicate background ID found: {bg.id}");
+        }
+    }
 
     private AvatarItemSO[] GetAvatarListByColor(TeamColor color)
     {
@@ -64,7 +134,7 @@ public class FrameDataManager : MonoBehaviour
         return null;
     }
 
-    private IEnumerator IERandomPlayerFrame(PlayerFrame player, float minDuration = 0.5f, float maxDuration = 2f)
+/*    private IEnumerator IERandomPlayerFrame(PlayerFrame player, float minDuration = 0.5f, float maxDuration = 2f)
     {
         float duration = Random.Range(minDuration, maxDuration);
         float elapsed = 0f;
@@ -90,9 +160,29 @@ public class FrameDataManager : MonoBehaviour
         // Chọn avatar và tên cuối cùng
         var finalAvatar = avatars[Random.Range(0, avatars.Length)].sprite;
         player.SetAvatar(finalAvatar);
-    }
+    }*/
 
     #endregion
 
 
+}
+
+
+[Serializable]
+public class PlayerInfo
+{
+    public string characterID;
+    public string avatarID;
+    public string frameID;
+    public string backgroundID;
+    public string name;
+
+    public PlayerInfo(string characterID, string avatarID, string frameID, string backgroundID, string name)
+    {
+        this.characterID = characterID;
+        this.avatarID = avatarID;
+        this.frameID = frameID;
+        this.backgroundID = backgroundID;
+        this.name = name;
+    }
 }

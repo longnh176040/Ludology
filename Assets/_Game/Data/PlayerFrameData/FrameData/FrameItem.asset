@@ -9,10 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9be6838de21142d4296c0baa0a20c410, type: 3}
-  m_Name: AvatarItem
+  m_Script: {fileID: 11500000, guid: a3fab08b74c743b418b8ff9c75ca0db5, type: 3}
+  m_Name: FrameItem
   m_EditorClassIdentifier: 
-  id: avatar_red_000
-  sprite: {fileID: 21300000, guid: 46b8acb5fdbf22a41838f9d6a836fabd, type: 3}
-  displayName: 
+  id: frame_000
+  sprite: {fileID: 21300000, guid: c036f3de1f1584b6eb35aa03cce9964c, type: 3}
   price: 0

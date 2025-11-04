@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     #region Properties
 
     public TeamColor TeamColor => teamColor;
+    public PlayerInfo PlayerInfo => playerInfo;
     public BoardPoint StartPoint => startPoint;
     public int PieceInHouse { get; private set; }
 
@@ -28,14 +29,18 @@ public class Player : MonoBehaviour
     [Inject] private BoardManager boardManager;
     [Inject] private SignalBus signalBus;
 
+    private PlayerInfo playerInfo;
+
     private bool allPieceInCorner = true;
 
     #endregion
 
     #region Public Methods
 
-    public void Init()
+    public void Init(PlayerInfo playerInfo)
     {
+        this.playerInfo = playerInfo;
+
         for (int i = 0; i < pieceList.Length; i++)
         {
             pieceList[i].Init(i);

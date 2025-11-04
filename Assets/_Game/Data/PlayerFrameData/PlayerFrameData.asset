@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8554098ff17de4049bb8d47a107916f2, type: 3}
   m_Name: PlayerFrameData
   m_EditorClassIdentifier: 
-  frameItems: []
-  backgroundItems: []
+  frameItems:
+  - {fileID: 11400000, guid: 7fd7a6323a4685444b61e0ef33d02814, type: 2}
+  backgroundItems:
+  - {fileID: 11400000, guid: a4d46fb6e7f12b8419d447858d366d2c, type: 2}
   redAvatars:
   - {fileID: 11400000, guid: d16047a270a11a44381015a8977dc221, type: 2}
   - {fileID: 11400000, guid: 05cabca4e45ac434580f6b9fffd5afec, type: 2}

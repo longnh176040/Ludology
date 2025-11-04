@@ -4,8 +4,8 @@ using Zenject;
 public enum TeamColor
 {
     RED,
-    GREEN,
     BLUE,
+    GREEN,
     YELLOW
 }
 
@@ -15,13 +15,13 @@ public class GameController : MonoBehaviour
     #region Inspector Variables
 
     [SerializeField] private Player[] players;
-    [SerializeField] private Animation[] turnAnimations;
+    [SerializeField] private TurnPanel turnPanel;
 
     #endregion
 
     #region Member Variables
 
-    [Inject] private AudioManager audioManager;
+    [Inject] private DataManager dataManager;
 
     private TeamColor currentTurn;
     private bool isDoubleTurn;
@@ -38,23 +38,47 @@ public class GameController : MonoBehaviour
     #endregion
 
     #region Public Methods
-
-    public Color GetColor(TeamColor teamColor)
+    public void Init()
     {
-        switch (teamColor) 
-        { 
-            case TeamColor.RED:
-                return new Color(1f, 99f/255f, 99f / 255f, 1f);
-            case TeamColor.GREEN:
-                return new Color(136f / 255f, 1f, 89f / 255f, 1f);
-            case TeamColor.BLUE:
-                return new Color(71f / 255f, 188f / 255f, 1f, 1f);
-            case TeamColor.YELLOW:
-                return new Color(1f, 239f / 255f, 68f / 255f, 1f);                
-        }
-        return Color.white;
+        //Init data for main player
+        PlayerInfoData playerInfoData = dataManager.playerInfoData;
+        players[(int)playerInfoData.color].Init(playerInfoData.info);
+        
+        //Set red to be the first team
+        currentTurn = TeamColor.RED;
     }
 
+    public void AddPlayer(NewPlayerSignal newPlayerSignal)
+    {
+        int teamID = (int) newPlayerSignal.TeamColor;
+        players[teamID].Init(newPlayerSignal.PlayerInfo);
+    }  
+
+    public Color GetColor(TeamColor teamColor, bool light = true)
+    {
+        return teamColor switch
+        {
+            TeamColor.RED => light
+                ? new Color(1f, 99f / 255f, 99f / 255f)
+                : new Color(1f, 47f / 255f, 47f / 255f),
+
+            TeamColor.GREEN => light
+                ? new Color(136f / 255f, 1f, 89f / 255f)
+                : new Color(55f / 255f, 188f / 255f, 95f / 255f),
+
+            TeamColor.BLUE => light
+                ? new Color(71f / 255f, 188f / 255f, 1f)
+                : new Color(50f / 255f, 146f / 255f, 210f / 255f),
+
+            TeamColor.YELLOW => light
+                ? new Color(1f, 239f / 255f, 68f / 255f)
+                : new Color(223f / 255f, 189f / 255f, 25f / 255f),
+
+            _ => Color.white
+        };
+    }
+
+    #region Signal Functions
     public void OnExtendTurn()
     {
         isDoubleTurn = true;
@@ -75,37 +99,26 @@ public class GameController : MonoBehaviour
         SetDiceTurn();
     }
 
+    #endregion
 
     #endregion
 
     #region Private Methods
 
-    private void Init()
-    {
-        foreach (var player in players)
-        {
-            player.Init();
-        }
-
-        currentTurn = TeamColor.RED;
-    }
-
     private void SwitchTurn()
     {
         if (!isDoubleTurn)
         {
-            audioManager.PlaySound("Woosh");
-
             switch (currentTurn)
             {
                 case TeamColor.RED:
                     currentTurn = TeamColor.BLUE;
                     break;
-                case TeamColor.GREEN:
-                    currentTurn = TeamColor.YELLOW;
-                    break;
                 case TeamColor.BLUE:
                     currentTurn = TeamColor.GREEN;
+                    break;
+                case TeamColor.GREEN:
+                    currentTurn = TeamColor.YELLOW;
                     break;
                 case TeamColor.YELLOW:
                     currentTurn = TeamColor.RED;
@@ -124,10 +137,8 @@ public class GameController : MonoBehaviour
             player.ActiveTurn(player.TeamColor == currentTurn);
         }
 
-        for (int i = 0; i < turnAnimations.Length; i++)
-        {
-            turnAnimations[i].gameObject.SetActive(i == (int)currentTurn);
-        }
+        var currentPlayer = players[(int)currentTurn];
+        turnPanel.SetTurnPanel(currentPlayer.PlayerInfo, currentTurn);
     }
 
     private void SetMoveTurn()

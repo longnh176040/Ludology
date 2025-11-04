@@ -21,6 +21,7 @@ public class MatchingScreen : MonoBehaviour
 
     [Inject] private SignalBus signalBus;
     [Inject] protected AudioManager audioManager;
+    [Inject] protected DataManager dataManager;
 
     #endregion
 
@@ -41,16 +42,28 @@ public class MatchingScreen : MonoBehaviour
         float maxFindOpponentTime = float.MinValue;
         foreach (MatchingUnit unit in matchingUnit)
         {
-            float minFODuration = 0.5f;
-            float maxFODuration = 2f;
-            float FODuration = Random.Range(minFODuration, maxFODuration);
-            if (FODuration > maxFindOpponentTime) maxFindOpponentTime = FODuration;
-            unit.PlayInAnimation(animDuration, FODuration);
+            if (unit.Color == dataManager.playerInfoData.color)
+            {
+                unit.PlayInAnimation(animDuration, true);
+            }
+            else
+            {
+                float minFODuration = 0.5f;
+                float maxFODuration = 2f;
+                float FODuration = Random.Range(minFODuration, maxFODuration);
+                if (FODuration > maxFindOpponentTime) maxFindOpponentTime = FODuration;
+                unit.PlayInAnimation(animDuration, findOpponentDuration: FODuration);
+            }
         }
 
         vsAnimator.Play("VS_Show");
 
-        yield return new WaitForSeconds(animDuration + maxFindOpponentTime + .5f);
+        //Wait until all opponents are found
+        yield return new WaitForSeconds(animDuration + maxFindOpponentTime + .25f);
+        //Init match here...
+        signalBus.Fire(new InitNewGameSignal());
+        yield return new WaitForSeconds(.5f);
+
         audioManager.PlaySound("Match");
 
         bgImg.enabled = false;

@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,7 +13,7 @@ public class PlayerFrame : MonoBehaviour
     [SerializeField] protected Image characterImage;
     [SerializeField] protected Image frameImage;
     [SerializeField] protected Image bgImg;
-    [SerializeField] protected TextMeshProUGUI turnTxt;
+    [SerializeField] protected TextMeshProUGUI nameTxt;
 
     #endregion
 
@@ -25,6 +26,7 @@ public class PlayerFrame : MonoBehaviour
     #region Member Variables
 
     [Inject] protected FrameDataManager frameDataManager;
+    [Inject] protected DataManager dataManager;
 
     #endregion
 
@@ -33,6 +35,22 @@ public class PlayerFrame : MonoBehaviour
     public void SetPosition(Vector3 position)
     {
         rectTransform.anchoredPosition = position;
+    }
+
+    public virtual void ShowPlayerInfo(PlayerInfo playerInfo = null)
+    {
+        var avatarID = playerInfo == null? dataManager.playerInfoData.info.avatarID : playerInfo.avatarID;
+        var frameID = playerInfo == null ? dataManager.playerInfoData.info.frameID : playerInfo.frameID;
+        var bgID = playerInfo == null ? dataManager.playerInfoData.info.backgroundID : playerInfo.backgroundID;
+        string nameTxt = playerInfo == null? dataManager.playerInfoData.info.name : playerInfo.name;
+
+        AvatarItemSO avatarItem = frameDataManager.GetAvatarItemByID(avatarID);
+        SetAvatar(avatarItem.sprite);
+        FrameItemSO frameItem = frameDataManager.GetFrameItemByID(frameID);
+        SetFrame(frameItem.sprite);
+        BackgroundItemSO backgroundItem = frameDataManager.GetBackgroundItemByID(bgID);
+        SetBackground(backgroundItem.sprite);
+        SetPlayerName(nameTxt);
     }
 
     public void SetAvatar(Sprite sprite) 
@@ -50,12 +68,9 @@ public class PlayerFrame : MonoBehaviour
         bgImg.sprite = sprite;
     }
 
-    public void SetPlayerTurn(bool isPlayer = false)
+    public void SetPlayerName(string name)
     {
-        //TODO: change character image if the player purchased a new avatar
-
-        turnTxt.text = isPlayer ? "YOU" : "PLAYER";
-        //frameImage.color = isPlayer ? Color.red : Color.white;
+        nameTxt.text = name;
     }
 
     #endregion
@@ -64,10 +79,11 @@ public class PlayerFrame : MonoBehaviour
 
     protected void ShowInfo(bool show = true)
     {
-        turnTxt.gameObject.SetActive(show);
+        nameTxt.gameObject.SetActive(show);
         characterImage.gameObject.SetActive(show);
     }
 
     #endregion
 
 }
+

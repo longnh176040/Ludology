@@ -18,6 +18,12 @@ public class MatchingUnit : MonoBehaviour
 
     #endregion
 
+    #region Properties
+
+    public TeamColor Color => color;
+
+    #endregion
+
     #region Member Variables
 
     [Inject] private GameController gameController;
@@ -38,12 +44,16 @@ public class MatchingUnit : MonoBehaviour
     #endregion
 
     #region Public Methods
-    public void PlayInAnimation(float duration = 1f, float findOpponentDuration = 2f)
+    public void PlayInAnimation(float duration = 1f, bool isPlayer = false, float findOpponentDuration = 2f)
     {
         rectTransform.anchoredPosition = anchorPosition * 2;
+        if (isPlayer) {
+            playerFrame.ShowPlayerInfo();
+        }
+
         PlayAnimation(anchorPosition, duration, ()=>
         {
-            playerFrame.FindOpponent(findOpponentDuration);
+            if (!isPlayer) playerFrame.FindOpponent(findOpponentDuration);
         });
     }
 

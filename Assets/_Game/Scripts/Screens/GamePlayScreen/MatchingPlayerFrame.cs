@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 public class MatchingPlayerFrame : PlayerFrame
 {
@@ -10,11 +11,25 @@ public class MatchingPlayerFrame : PlayerFrame
 
     #endregion
 
+    #region Member Variables
+
+    [Inject] private SignalBus signalBus;
+    [Inject] private AudioManager audioManager;
+
+    #endregion
+
     #region Public Methods
 
     public void FindOpponent(float duration)
     {
         StartCoroutine(IE_FindOpponent(duration));
+    }
+
+    public override void ShowPlayerInfo(PlayerInfo playerInfo = null)
+    {
+        base.ShowPlayerInfo(playerInfo);
+        searchIconObj.SetActive(false);
+        ShowInfo(true);
     }
 
     #endregion
@@ -26,20 +41,25 @@ public class MatchingPlayerFrame : PlayerFrame
         ShowInfo(false);
         searchIconObj.SetActive(true);
 
-        var opponentInfo = frameDataManager.RandomPlayerFrame(color);
+        var opponentInfo = frameDataManager.RandomPlayerInfo(color);
 
-        var avatarItem = frameDataManager.GetAvatarItemByIndex(color, opponentInfo.Item1);
-        //var frameItem = frameDataManager.GetFrameItemByIndex(opponentInfo.Item2);
-        //var backgroundItem = frameDataManager.GetBackgroundItemByIndex(opponentInfo.Item3);
+        //Fire New Player Signal to add new player to the match
+        signalBus.Fire(new NewPlayerSignal(color, opponentInfo));
+
+        var avatarItem = frameDataManager.GetAvatarItemByID(opponentInfo.avatarID);
+        var frameItem = frameDataManager.GetFrameItemByID(opponentInfo.frameID);
+        var backgroundItem = frameDataManager.GetBackgroundItemByID(opponentInfo.backgroundID);
 
         yield return new WaitForSeconds(duration);
 
-        searchIconObj.SetActive(false);
+        /*searchIconObj.SetActive(false);
         ShowInfo(true);
         SetAvatar(avatarItem.sprite);
-        turnTxt.text = Utilities.RandomName();
-        //SetFrame(frameItem.sprite);
-        //SetBackground(backgroundItem.sprite);
+        SetFrame(frameItem.sprite);
+        SetBackground(backgroundItem.sprite);
+        nameTxt.text = opponentInfo.name;*/
+        ShowPlayerInfo(opponentInfo);
+        audioManager.PlaySound("Pop");
     }
 
     #endregion
