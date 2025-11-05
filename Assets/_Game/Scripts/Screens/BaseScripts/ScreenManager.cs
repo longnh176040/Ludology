@@ -158,18 +158,19 @@ public class ScreenManager : MonoBehaviour
 	public Vector2 GetAnchorPosition(AnchorConstraint constraint)
 	{
 		float widthCenter = GameManager.ScreenWidth / 2;
-		float heightCenter = GameManager.ScreenHeight / 2;
+		float heightCenter = GameManager.ScreenHeight  / 2;
+		float bannerOffset = Constant.BANNER_SIZE / 2;
 
 		switch (constraint) 
 		{
 			case AnchorConstraint.TOP_LEFT_CORNER:
-				return new Vector2 (-widthCenter, heightCenter);
+				return new Vector2 (-widthCenter, heightCenter + bannerOffset);
 			case AnchorConstraint.TOP_RIGHT_CORNER:
-				return new Vector2 (widthCenter, heightCenter);
+				return new Vector2 (widthCenter, heightCenter + bannerOffset);
 			case AnchorConstraint.BOTTOM_LEFT_CORNER: 
-				return new Vector2 (-widthCenter, -heightCenter);
+				return new Vector2 (-widthCenter, -heightCenter + bannerOffset);
 			case AnchorConstraint.BOTTOM_RIGHT_CORNER: 
-				return new Vector2 (widthCenter, -heightCenter);
+				return new Vector2 (widthCenter, -heightCenter + bannerOffset);
 		}
 		return Vector2.zero;
 	}
