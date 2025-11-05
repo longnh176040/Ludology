@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9be6838de21142d4296c0baa0a20c410, type: 3}
-  m_Name: AvatarItem 12
+  m_Name: AvatarItem 15
   m_EditorClassIdentifier: 
-  id: avatar_yellow_004
-  sprite: {fileID: 21300000, guid: d093c577b8c31ba458b29933e4c99335, type: 3}
+  id: avatar_red_004
+  sprite: {fileID: 21300000, guid: 02cfea5688badbb42a6a1cf9df7acdc8, type: 3}
   displayName: 
   price: 0

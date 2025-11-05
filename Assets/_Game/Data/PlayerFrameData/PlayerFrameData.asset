@@ -21,6 +21,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 05cabca4e45ac434580f6b9fffd5afec, type: 2}
   - {fileID: 11400000, guid: 673196ef54c24694baeb30d3a82a1765, type: 2}
   - {fileID: 11400000, guid: ddc05174455b9844895b9b3c4d919ca8, type: 2}
+  - {fileID: 11400000, guid: 60768f927285f6942a3ab102cb2d1f89, type: 2}
   blueAvatars:
   - {fileID: 11400000, guid: 5a938f85f89f03b46b561aa1f5217e72, type: 2}
   - {fileID: 11400000, guid: 4c4b8af23c9cb9b4995d5b474dd17773, type: 2}
@@ -35,4 +36,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 810530b209905eb4ba1ad07ac45c7a9f, type: 2}
   - {fileID: 11400000, guid: 785e949b75882134fbebd82f0aaa0ccb, type: 2}
   - {fileID: 11400000, guid: e0d5ef1031d8e3e4eaa02b0fb76f773e, type: 2}
-  - {fileID: 11400000, guid: b5346f2950b0e754b896f7d52a79579a, type: 2}
+  - {fileID: 11400000, guid: 9e2eca528c3b6844eb8595e7611deb9c, type: 2}

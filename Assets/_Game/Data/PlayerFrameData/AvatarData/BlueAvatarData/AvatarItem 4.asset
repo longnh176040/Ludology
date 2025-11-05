@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: AvatarItem 4
   m_EditorClassIdentifier: 
   id: avatar_blue_001
-  sprite: {fileID: 21300000, guid: 484dcdaf0825148b886e56472fb3bb78, type: 3}
+  sprite: {fileID: 21300000, guid: 73fe930f716d6e04b817d31f61c94ec8, type: 3}
   displayName: 
   price: 0
