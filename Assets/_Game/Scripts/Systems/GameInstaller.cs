@@ -14,6 +14,7 @@ public class GameInstaller : MonoInstaller
         Container.Bind<MatchingScreen>().FromComponentInHierarchy().AsSingle();
         Container.Bind<FrameDataManager>().FromComponentInHierarchy().AsSingle();
         Container.Bind<HomeTopBar>().FromComponentInHierarchy().AsSingle();
+        Container.Bind<GameScreen>().FromComponentInHierarchy().AsSingle();
 
         //====== Install Signal ======
         SignalBusInstaller.Install(Container);
@@ -25,6 +26,7 @@ public class GameInstaller : MonoInstaller
         Container.DeclareSignal<InitNewGameSignal>();
 
         Container.DeclareSignal<StartMainGameSignal>();
+        Container.DeclareSignal<HumanTurnSignal>();
         Container.DeclareSignal<ExtendTurnSignal>();
         Container.DeclareSignal<FinishDiceSignal>();
         Container.DeclareSignal<SwitchTurnSignal>();
@@ -41,6 +43,7 @@ public class GameInstaller : MonoInstaller
         Container.BindSignal<FinishDiceSignal>().ToMethod<GameController>(x => x.OnFinishDice).FromResolve();
         Container.BindSignal<SwitchTurnSignal>().ToMethod<GameController>(x => x.OnSwitchTurn).FromResolve();
 
+        Container.BindSignal<HumanTurnSignal>().ToMethod<GameScreen>(x => x.ShowControlPanel).FromResolve();
 
 
     }

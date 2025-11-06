@@ -1,4 +1,6 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 using Zenject;
 
 public enum TeamColor
@@ -21,19 +23,13 @@ public class GameController : MonoBehaviour
 
     #region Member Variables
 
+    [Inject] private DiContainer container;
     [Inject] private DataManager dataManager;
+
+    private Player mainPlayer;
 
     private TeamColor currentTurn;
     private bool isDoubleTurn;
-
-    #endregion
-
-    #region Unity Methods
-
-    private void Start()
-    {
-        Init();
-    }
 
     #endregion
 
@@ -42,7 +38,10 @@ public class GameController : MonoBehaviour
     {
         //Init data for main player
         PlayerInfoData playerInfoData = dataManager.playerInfoData;
-        players[(int)playerInfoData.color].Init(playerInfoData.info);
+        mainPlayer = players[(int)playerInfoData.color];
+        var humanController = mainPlayer.AddComponent<HumanController>();
+        container.Inject(humanController);
+        mainPlayer.Init(playerInfoData.info, humanController);
         
         //Set red to be the first team
         currentTurn = TeamColor.RED;
@@ -51,7 +50,9 @@ public class GameController : MonoBehaviour
     public void AddPlayer(NewPlayerSignal newPlayerSignal)
     {
         int teamID = (int) newPlayerSignal.TeamColor;
-        players[teamID].Init(newPlayerSignal.PlayerInfo);
+        Player botPlayer = players[teamID];
+        botPlayer.Init(newPlayerSignal.PlayerInfo, 
+            botPlayer.AddComponent<BotController>());
     }  
 
     public Color GetColor(TeamColor teamColor, bool light = true)
@@ -76,6 +77,12 @@ public class GameController : MonoBehaviour
 
             _ => Color.white
         };
+    }
+
+
+    public void RollMainDice()
+    {
+        mainPlayer.RollDice();
     }
 
     #region Signal Functions

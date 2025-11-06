@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Zenject;
@@ -33,13 +34,17 @@ public class Player : MonoBehaviour
 
     private bool allPieceInCorner = true;
 
+    private IPlayerController controller;
+
     #endregion
 
     #region Public Methods
 
-    public void Init(PlayerInfo playerInfo)
+    public void Init(PlayerInfo playerInfo, IPlayerController controller)
     {
         this.playerInfo = playerInfo;
+        this.controller = controller;
+        this.controller.Init(this);
 
         for (int i = 0; i < pieceList.Length; i++)
         {
@@ -54,6 +59,13 @@ public class Player : MonoBehaviour
     {
         turnBorder_Obj.SetActive(active);
         dice.SetActiveDiceButton(active);
+
+        if (active) controller?.OnTurn();
+    }
+
+    public void RollDice()
+    {
+        dice.OnDiceClick();
     }
 
     public void ActivePieceSelection(bool active = true, bool interactable = true)
@@ -67,12 +79,14 @@ public class Player : MonoBehaviour
     public void CalculateMovePiece()
     {
         int diceNumber = dice.DiceResult;
+        var movablePieces = new List<Piece>();
 
         if (allPieceInCorner) //No piece started
         {
             if (diceNumber != 6)
             {
                 signalBus.Fire(new SwitchTurnSignal { });
+                return;
             }
             else
             {
@@ -80,6 +94,7 @@ public class Player : MonoBehaviour
                 {
                     piece.ActiveSelection();
                     piece.SetMoveAction(new BoardPoint[] { startPoint });
+                    movablePieces.Add(piece);
                 }
                 allPieceInCorner = false;
             }
@@ -95,6 +110,7 @@ public class Player : MonoBehaviour
                     {
                         piece.ActiveSelection();
                         piece.SetMoveAction(new BoardPoint[] { startPoint });
+                        movablePieces.Add(piece);
                         isAllPieceCantMove = false;
                     }
                 }
@@ -103,15 +119,21 @@ public class Player : MonoBehaviour
                     BoardPoint[] path = boardManager.CreatePath(teamColor, piece.CurrentPoint, diceNumber);
                     if (path != null)
                     {
-                        piece.SetMoveAction(path);
                         piece.ActiveSelection();
+                        piece.SetMoveAction(path);
+                        movablePieces.Add(piece);
                         isAllPieceCantMove = false;
                     }
                 }
             }
             if (isAllPieceCantMove)
+            {
                 signalBus.Fire(new SwitchTurnSignal { });
+                return;
+            }
         }
+
+        controller?.OnMove(movablePieces);
     }
 
     public RectTransform GetPieceCornerTrans(int id)

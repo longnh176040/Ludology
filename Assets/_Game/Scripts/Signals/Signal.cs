@@ -25,6 +25,8 @@ public class NewPlayerSignal {
 
 public struct InitNewGameSignal { }
 
+public struct HumanTurnSignal { }
+
 public struct ExtendTurnSignal { }
 
 public struct FinishDiceSignal { }

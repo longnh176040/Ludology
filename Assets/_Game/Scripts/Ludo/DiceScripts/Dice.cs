@@ -53,11 +53,6 @@ public class Dice : MonoBehaviour
         DiceResult = Random.Range(1, 7);
     }
 
-    public void SetDiceResult(int diceResult)
-    {
-        DiceResult = diceResult;
-    }
-
     public void OnDiceEnd()
     {
         for (int i = 0; i < diceNumbers.Length; i++)
