@@ -27,7 +27,11 @@ public class Piece : MonoBehaviour
     public bool IsFinished { get; private set; }
     public bool IsActive { get; private set; }
 
+    public int PieceScore { get; private set; } //The further the piece move, the higher the score
+
     public BoardPoint CurrentPoint => currentPoint;
+
+    public BoardPoint[] Path => path;
 
     #endregion
 
@@ -59,6 +63,7 @@ public class Piece : MonoBehaviour
         rectTrans.localScale = Vector3.one * inCornerScaleOffset;
         ActiveSelection(false, false);
         currentPoint = null;
+        PieceScore = 0;
     }
 
     public void ActiveSelection(bool active = true, bool interactable = true)
@@ -71,7 +76,6 @@ public class Piece : MonoBehaviour
     public void OnPieceClick()
     {
         player.ActivePieceSelection(false, false);
-        //player.SetLastMovedPiece(this);
 
         if (path != null)
         {
@@ -82,11 +86,8 @@ public class Piece : MonoBehaviour
     public void SetMoveAction(BoardPoint[] path)
     {
         this.path = path;
-
-        /*foreach (BoardPoint p in path) { 
-            Debug.Log(p.name) ;
-        }*/
     }
+
 
     #endregion
 
@@ -122,8 +123,9 @@ public class Piece : MonoBehaviour
 
         for (int i = 0; i < path.Length; i++)
         {
-            Transform targetParent = path[i].RectTrans;        
-        
+            Transform targetParent = path[i].RectTrans;
+
+            PieceScore++;
             // Snap to final position
             rectTrans.SetParent(targetParent);
             audioManager.PlaySound("Step");
@@ -258,6 +260,7 @@ public class Piece : MonoBehaviour
     private void GetKicked(BoardPoint[] path)
     {
         currentPoint.RemovePiece(this);
+        PieceScore = 0;
         if (currentPoint.NumPieceInside == 1)
         {
             currentPoint.Pieces[0].RectTrans.localScale = Vector3.one * inBoardScaleOffset;

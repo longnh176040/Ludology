@@ -51,8 +51,9 @@ public class GameController : MonoBehaviour
     {
         int teamID = (int) newPlayerSignal.TeamColor;
         Player botPlayer = players[teamID];
-        botPlayer.Init(newPlayerSignal.PlayerInfo, 
-            botPlayer.AddComponent<BotController>());
+        var botController = botPlayer.AddComponent<BotController>();
+        botPlayer.Init(newPlayerSignal.PlayerInfo, botController);
+        botController.SetDifficulty();
     }  
 
     public Color GetColor(TeamColor teamColor, bool light = true)
